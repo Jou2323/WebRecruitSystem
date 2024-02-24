@@ -1,23 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
-
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
 
 
 export default function Report() {
     
-  
+    const { token, logout } = useAuth();
+    const location = useLocation();
    
     const [candidates,setCandidates]=useState([])
 
     useEffect(() => {
+        if (token) {
         loadCandidates();  
-    },[]);
+    }}, [location, token]);
    
     const loadCandidates= async ()=>{
-        const result= await axios.get("http://localhost:8080/candidates/candidatesall");
+        try{
+        const result= await axios.get("http://localhost:8080/candidates/candidatesall", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }});
         setCandidates(result.data);
-    };
+    }catch (error) {
+        console.error('Error loading position:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
+      };
 
 
     return(
@@ -102,5 +115,5 @@ export default function Report() {
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"></link>
     </div>
     
-    )
+    );
 }

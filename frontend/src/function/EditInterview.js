@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
+import { useLocation } from 'react-router-dom';
 export default function EditInterview() {
-  let navigate = useNavigate();
 
+  let navigate = useNavigate();
+  const { token, logout } = useAuth();
+  const location = useLocation();
   const { id } = useParams();
 
   const [interview,setInterview]=useState({
@@ -23,18 +26,42 @@ const {title,email,status,candidateId,dateAndTime,eventLink,recruiterId } = inte
   };
 
   useEffect(() => {
+    if (token) {
     loadUser();
-  }, []);
+  }
+  }, [location, token]);
 
   const onSubmitUpdate = async (e) => {
+    try{
     e.preventDefault();
-    await axios.put(`http://localhost:8080/interviews/${id}`, interview);
+    await axios.put(`http://localhost:8080/interviews/${id}`, interview, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }});
     navigate("/Interview");
+      }catch (error) {
+        console.error('Error loading interviews:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
   };
 
   const loadUser = async () => {
-    const result = await axios.get(`http://localhost:8080/interviews/${id}`);
+    try{
+    const result = await axios.get(`http://localhost:8080/interviews/${id}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }});
     setInterview(result.data);
+  }catch (error) {
+    console.error('Error loading interview:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
   };
 
   return (

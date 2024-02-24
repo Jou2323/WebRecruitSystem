@@ -1,6 +1,6 @@
 package dev.mesh.recruitment.controllers;
 
-import dev.mesh.recruitment.Employee;
+import dev.mesh.recruitment.models.Employee;
 import dev.mesh.recruitment.servises.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin("http://localhost:3000")
 public class EmployeeController {
 
     @Autowired

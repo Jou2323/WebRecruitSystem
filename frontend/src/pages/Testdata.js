@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
+import "../App.css"
 function rgb(r, g, b){
     r = Math.floor(r);
     g = Math.floor(g);
@@ -13,7 +14,8 @@ function rgb(r, g, b){
 export default function Testdata() {
     
     let navigate = useNavigate();
-
+    const { token, logout } = useAuth();
+    const location = useLocation();
 
    
     const [test,setTest]=useState({
@@ -28,29 +30,63 @@ export default function Testdata() {
         setTest({...test, [e.target.name]: e.target.value});
     }
     const onSubmitAdd=async (e)=>{
+        try{
         e.preventDefault();
-        await axios.post("http://localhost:8080/test/addtest",test)
+        await axios.post("http://localhost:8080/test/addtest",test ,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }})
         navigate("/Testdata");
+    }catch (error) {
+        console.error('Error loading position:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
        };
 
    
     const [tests,setTests]=useState([])
 
     useEffect(() => {
+        if (token) {
         loadTest();  
-    },[]);
+    }}, [location, token]);
     
 
     
     const loadTest= async ()=>{
-        const result= await axios.get("http://localhost:8080/test/tests");
+        try{
+        const result= await axios.get("http://localhost:8080/test/tests",{
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }});
         setTests(result.data);
+    }catch (error) {
+        console.error('Error loading position:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
     };
 
     const deleteTest=async (id)=>{
-        await axios.delete(`http://localhost:8080/test/${id}`)
+        try{
+        await axios.delete(`http://localhost:8080/test/${id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }})
         loadTest()
-    }
+    }catch (error) {
+        console.error('Error loading position:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
+    };
     return(
      
 <div class="d-flex flex-column" id="content-wrapper">
@@ -166,9 +202,8 @@ export default function Testdata() {
                     </div>
                 </div>
         </div>
-        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"></link>
     </div>
     
-    )
+    );
                                     
 }

@@ -1,9 +1,7 @@
-package dev.mesh.recruitment;
+package dev.mesh.recruitment.models;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
-import javax.swing.text.html.Option;
 import java.util.Date;
 
 public class Interview {
@@ -21,7 +19,9 @@ public class Interview {
     private String recruiterId;
 
     private String eventLink;
-
+    public Interview() {
+        // default constructor
+    }
     public Interview(String id, String title, Date dateAndTime, String email, String status, String candidateId, String recruiterId, String eventLink) {
         this.id = id;
         this.title = title;

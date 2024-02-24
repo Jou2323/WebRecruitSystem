@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
 function rgb(r, g, b){
     r = Math.floor(r);
     g = Math.floor(g);
@@ -13,7 +13,8 @@ function rgb(r, g, b){
 export default function Position() {
     
     let navigate = useNavigate();
-
+    const { token, logout } = useAuth();
+    const location = useLocation();
 
    
     const [employee,setEmployee]=useState({
@@ -49,42 +50,109 @@ export default function Position() {
        }
 
     const onSubmitAdd=async (e)=>{
+        try{
         e.preventDefault();
-        await axios.post("http://localhost:8080/employee/addemployee",employee)
+        await axios.post("http://localhost:8080/employee/addemployee",employee, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }})
         navigate("/Position");
+    }catch (error) {
+        console.error('Error loading employee:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
        };
 
    const onSubmitAdd2=async (e)=>{
+    try{
         e.preventDefault();
-        await axios.post("http://localhost:8080/positions/create_position",positionest)
+        await axios.post("http://localhost:8080/positions/create_position",positionest, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }})
         navigate("/Position");
-       };
+    }catch (error) {
+        console.error('Error loading position:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }};
 
     const [employees,setEmployees]=useState([])
 const [positionests,setPositions]=useState([])
+
     useEffect(() => {
+        if (token) {
         loadEmployee();  
         loadPosition();
-    },[]);
+    }}, [location, token]);
     
 
     
     const loadEmployee= async ()=>{
-        const result= await axios.get("http://localhost:8080/employee/employees");
+        try{
+        const result= await axios.get("http://localhost:8080/employee/employees", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }});
         setEmployees(result.data);
+    }catch (error) {
+        console.error('Error loading employee:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
     };
     const loadPosition= async ()=>{
-        const result= await axios.get("http://localhost:8080/positions/allposition");
+        try{
+        const result= await axios.get("http://localhost:8080/positions/allposition", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }});
         setPositions(result.data);
+    }catch (error) {
+        console.error('Error loading position:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
     };
     const deleteEmployee=async (id)=>{
-        await axios.delete(`http://localhost:8080/employee/${id}`)
+        try{
+        await axios.delete(`http://localhost:8080/employee/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }})
         loadEmployee()
-    }
+    }catch (error) {
+        console.error('Error loading employee:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
+    };
     const deletePosition=async (id)=>{
-        await axios.delete(`http://localhost:8080/positions/${id}`)
+        try{
+        await axios.delete(`http://localhost:8080/positions/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }})
         loadPosition()
-    }
+    }catch (error) {
+        console.error('Error loading position:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
+    };
     return(
      
 <div class="d-flex flex-column" id="content-wrapper">
@@ -362,6 +430,6 @@ const [positionests,setPositions]=useState([])
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"></link>
     </div>
     
-    )
+    );
                                     
 }

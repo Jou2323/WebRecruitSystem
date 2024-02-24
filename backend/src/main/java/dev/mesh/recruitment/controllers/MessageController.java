@@ -1,9 +1,6 @@
 package dev.mesh.recruitment.controllers;
 
-import dev.mesh.recruitment.Candidate;
-import dev.mesh.recruitment.Message;
-import dev.mesh.recruitment.Test;
-import dev.mesh.recruitment.Vacancy;
+import dev.mesh.recruitment.models.Message;
 import dev.mesh.recruitment.servises.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

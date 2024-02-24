@@ -1,9 +1,11 @@
-package dev.mesh.recruitment;
+package dev.mesh.recruitment.models;
+
+import dev.mesh.recruitment.models.Candidate;
+import dev.mesh.recruitment.models.Recruiter;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
 
 public class Report {
     @Id

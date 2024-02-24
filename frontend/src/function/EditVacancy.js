@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
 export default function EditVacancy() {
   let navigate = useNavigate();
-
+  const { token, logout } = useAuth();
+  const locations = useLocation();
   const { id } = useParams();
 
   const [vacancy,setVacancy]=useState({
@@ -21,8 +22,10 @@ export default function EditVacancy() {
 })
 const {title,description,location,cost,year_exp,work_table,requirements,responsibilities, status} = vacancy
 useEffect(() => {
+  if (token) {
   loadUser();
-}, []);
+}}, [locations, token]);
+
   const onInputChange = (e) => {
     setVacancy({ ...vacancy, [e.target.name]: e.target.value });
   };
@@ -30,14 +33,36 @@ useEffect(() => {
   
 
   const onSubmitUpdate = async (e) => {
+    try{
     e.preventDefault();
-    await axios.put(`http://localhost:8080/vacancies/${id}`, vacancy);
+    await axios.put(`http://localhost:8080/vacancies/${id}`,vacancy, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }});
     navigate("/Vacancy");
+  } catch (error) {
+    console.error('Error loading vacancy:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
   };
 
   const loadUser = async () => {
-    const result = await axios.get(`http://localhost:8080/vacancies/${id}`);
+    try{
+    const result = await axios.get(`http://localhost:8080/vacancies/${id}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }});
     setVacancy(result.data);
+  } catch (error) {
+    console.error('Error loading candidates:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
   };
 
   return (

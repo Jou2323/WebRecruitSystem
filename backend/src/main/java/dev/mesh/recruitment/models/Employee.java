@@ -1,10 +1,9 @@
-package dev.mesh.recruitment;
+package dev.mesh.recruitment.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Employee {
     @Id
@@ -21,6 +20,10 @@ public class Employee {
 
     private String status;
     private LocalDate StartDate;
+
+    public Employee(){
+
+    }
 
     public String getId() {
         return id;

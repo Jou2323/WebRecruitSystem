@@ -1,4 +1,4 @@
-package dev.mesh.recruitment;
+package dev.mesh.recruitment.models;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 

@@ -1,18 +1,8 @@
-package dev.mesh.recruitment;
+package dev.mesh.recruitment.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import javax.annotation.processing.Generated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Vacancy {
@@ -31,7 +21,9 @@ public class Vacancy {
     private List<Candidate> candidatesIds;
     @DBRef
     private Recruiter recruiterIds;
-
+    public Vacancy() {
+        // Default constructor
+    }
     public Vacancy(String title, String description, String location, String cost, String work_table, String year_exp,  String requirements, String responsibilities, String status) {
         this.title = title;
         this.description = description;

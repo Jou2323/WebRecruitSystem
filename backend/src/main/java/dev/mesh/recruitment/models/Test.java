@@ -1,4 +1,4 @@
-package dev.mesh.recruitment;
+package dev.mesh.recruitment.models;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

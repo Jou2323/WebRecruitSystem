@@ -1,20 +1,23 @@
-import React, { useEffect, useRef, useState  } from "react";
+import React, { useRef  } from "react";
 
 import emailjs from "@emailjs/browser";
 import {Link} from "react-router-dom";
-
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
+import { useLocation } from "react-router-dom";
 const SendMessage = () => {
   const form = useRef();
-  
+  const { token, logout } = useAuth();
+  const location = useLocation();
   const sendEmail = (e) => {
+    try{
     e.preventDefault();
 
     emailjs
       .sendForm(
-        "service_uwnm12k",
+        "service_7phjpcr",
         "template_u5n1ja4",
         form.current,
-        "7fDu4tZniTLmSxbeB"
+        "QmUW0tmjpBnib7v2i"
       )
       .then(
         (result) => {
@@ -23,8 +26,18 @@ const SendMessage = () => {
         },
         (error) => {
           console.log(error.text);
-        }
+        }, {
+          headers: {
+              'Authorization': `Bearer ${token}`
+            }}
       );
+    }catch (error) {
+      console.error('Error loading message:', error);
+      if (error.response && error.response.status === 401) {
+        // Якщо токен протух або не дійсний, виконайте вихід
+        logout();
+      }
+    }
   };
 
 

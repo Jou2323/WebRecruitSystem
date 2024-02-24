@@ -1,7 +1,6 @@
 package dev.mesh.recruitment.controllers;
 
-import dev.mesh.recruitment.Candidate;
-import dev.mesh.recruitment.Report;
+import dev.mesh.recruitment.models.Report;
 import dev.mesh.recruitment.servises.ReportNotFoundException;
 import dev.mesh.recruitment.servises.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;

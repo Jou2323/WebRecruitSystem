@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
 export default function EditTestdata() {
   let navigate = useNavigate();
-
+  const { token, logout } = useAuth();
+  const location = useLocation();
   const { id } = useParams();
 
   const [test,setTest]=useState({
@@ -20,18 +21,41 @@ const {title,link,count_test,date_create} = test
   };
 
   useEffect(() => {
+    if (token) {
     loadTest();
-  }, []);
+  }}, [location, token]);
 
   const onSubmitUpdate = async (e) => {
+    try{
     e.preventDefault();
-    await axios.put(`http://localhost:8080/test/${id}`, test);
+    await axios.put(`http://localhost:8080/test/${id}`,test, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        } });
     navigate("/Testdata");
+  }catch (error) {
+    console.error('Error loading test:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
   };
 
   const loadTest = async () => {
-    const result = await axios.get(`http://localhost:8080/test/${id}`);
+    try{
+    const result = await axios.get(`http://localhost:8080/test/${id}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }});
     setTest(result.data);
+  }catch (error) {
+    console.error('Error loading candidates:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
   };
 
   return (

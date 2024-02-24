@@ -1,18 +1,14 @@
 package dev.mesh.recruitment.servises;
 
-import dev.mesh.recruitment.*;
+import dev.mesh.recruitment.models.Employee;
+import dev.mesh.recruitment.models.Position;
 import dev.mesh.recruitment.repositorys.EmployeeRepository;
 import dev.mesh.recruitment.repositorys.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

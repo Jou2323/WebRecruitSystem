@@ -1,7 +1,7 @@
 package dev.mesh.recruitment.controllers;
 import org.springframework.mail.SimpleMailMessage;
-import dev.mesh.recruitment.Candidate;
-import dev.mesh.recruitment.Vacancy;
+import dev.mesh.recruitment.models.Candidate;
+import dev.mesh.recruitment.models.Vacancy;
 import dev.mesh.recruitment.repositorys.CandidateRepository;
 import dev.mesh.recruitment.repositorys.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,7 @@
-package dev.mesh.recruitment;
+package dev.mesh.recruitment.models;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import javax.xml.crypto.Data;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class Position {
@@ -19,6 +15,9 @@ public class Position {
     private String domainemployeer;
     private String nick;
     private List<Employee> employees;
+    public Position() {
+        // Default constructor
+    }
     private Position(String id, String title, String start_work, String end_work, String requirements, String status, String domainemployeer,  String nick) {
         this.id = id;
         this.title = title;

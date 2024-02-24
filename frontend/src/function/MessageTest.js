@@ -1,20 +1,22 @@
 import React, { useEffect, useRef, useState  } from "react";
 import axios from 'axios';
 import emailjs from "@emailjs/browser";
-
+import { useLocation } from "react-router-dom";
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
 
 const MessageTest = () => {
   const form = useRef();
-  
+  const { token, logout } = useAuth();
+  const location = useLocation();
   const sendEmail = (e) => {
     e.preventDefault();
 
     emailjs
       .sendForm(
-        "service_uwnm12k",
+        "service_7phjpcr",
         "template_3ewefi7",
         form.current,
-        "7fDu4tZniTLmSxbeB"
+        "QmUW0tmjpBnib7v2i"
       )
       .then(
         (result) => {
@@ -27,12 +29,25 @@ const MessageTest = () => {
       );
   };
   useEffect(() => {
+    if (token) {
     loadTests();  
-},[]);
+  }}, [location, token]);
+
 const [tests,setTest]=useState([])
   const loadTests= async ()=>{
-    const result= await axios.get("http://localhost:8080/test/tests");
+    try{
+    const result= await axios.get("http://localhost:8080/test/tests", {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }});
     setTest(result.data);
+  }catch (error) {
+    console.error('Error loading test:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
 };
 
 

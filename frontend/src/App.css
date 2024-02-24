@@ -36,3 +36,44 @@
     transform: rotate(360deg);
   }
 }
+.App img{
+  display:inline-block;
+  transform:translatex(91px) translatey(-8px);
+  border-top-left-radius:50px;
+  border-top-right-radius:50px;
+  border-bottom-left-radius:50px;
+  border-bottom-right-radius:50px;
+  width:240px;
+  min-height:186px;
+  position:relative;
+ }
+/* Th */
+#root .App #content-wrapper #content .container-fluid .card .card-body .table #dataTable thead tr th{
+  width:300px !important;
+ }
+ 
+ /* Th */
+ #dataTable tr th{
+  text-align:center;
+ }
+ 
+ /* Table Data */
+ #dataTable tfoot td{
+  text-align:center;
+ }
+ 
+
+ 
+ /* Button */
+#dataTable tr a.btn-primary{
+  position:static;
+  transform:translatex(-5px) translatey(19px);
+ }
+ 
+ /* Table Data */
+ #dataTable tbody td{
+  text-transform:capitalize;
+  text-align:center;
+ }
+ 
+ 

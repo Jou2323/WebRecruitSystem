@@ -1,8 +1,7 @@
 package dev.mesh.recruitment.servises;
 
 
-import dev.mesh.recruitment.Employee;
-import dev.mesh.recruitment.Position;
+import dev.mesh.recruitment.models.Employee;
 import dev.mesh.recruitment.repositorys.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;

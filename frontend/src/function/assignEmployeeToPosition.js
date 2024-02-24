@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { Link, useNavigate, useParams, useLocation} from "react-router-dom";
+import { useAuth } from '../AuthContext';
 export default function AsassignEmployeeToPosition() {
   let navigate = useNavigate();
-
+  const { token, logout } = useAuth();
   const { id } = useParams();
-
+  const location = useLocation();
   const [positionest,setPosition]=useState({
     domainemployeer:"",
     nick:"" 
@@ -18,26 +18,63 @@ const {domainemployeer, nick} = positionest
   };
 
   useEffect(() => {
+    if (token) {
     loadUser();
     loadEmployee(); 
-  }, []);
+  }
+}, [location, token]);
 
   const onSubmitUpdate = async (e) => {
+    try{
     e.preventDefault();
-    await axios.put(`http://localhost:8080/positions/${id}`, positionest);
+    await axios.put(`http://localhost:8080/positions/${id}`,positionest, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }});
+  } catch (error) {
+    console.error('Error loading candidates:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
     navigate("/Position");
   };
 
 
   const loadUser = async () => {
-    const result = await axios.get(`http://localhost:8080/positions/${id}`);
+    try{
+    const result = await axios.get(`http://localhost:8080/positions/${id}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }
+    });
     setPosition(result.data);
+  } catch (error) {
+    console.error('Error loading candidates:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
   };
 
 const [employees,setEmployee]=useState([])
   const loadEmployee= async ()=>{
-    const result= await axios.get("http://localhost:8080/employee/employees");
+    try{
+    const result= await axios.get("http://localhost:8080/employee/employees", {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }
+    });
     setEmployee(result.data);
+  } catch (error) {
+    console.error('Error loading position:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
 };
 
   return (

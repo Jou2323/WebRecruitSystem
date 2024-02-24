@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
 export default function EditPosition() {
   let navigate = useNavigate();
-
+  const { token, logout } = useAuth();
+  const location = useLocation();
   const { id } = useParams();
 
   const [positionest,setPosition]=useState({
@@ -21,18 +22,41 @@ const {title,start_work,end_work,requirements,status } = positionest
   };
 
   useEffect(() => {
+    if (token) {
     loadUser();
-  }, []);
+  }}, [location, token]);
 
   const onSubmitUpdate = async (e) => {
+    try{
     e.preventDefault();
-    await axios.put(`http://localhost:8080/positions/${id}`, positionest);
+    await axios.put(`http://localhost:8080/positions/${id}`,positionest, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        } });
     navigate("/Position");
+  }catch (error) {
+    console.error('Error loading position:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
   };
 
   const loadUser = async () => {
-    const result = await axios.get(`http://localhost:8080/positions/${id}`);
+    try{
+    const result = await axios.get(`http://localhost:8080/positions/${id}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+        }});
     setPosition(result.data);
+  }catch (error) {
+    console.error('Error loading candidates:', error);
+    if (error.response && error.response.status === 401) {
+      // Якщо токен протух або не дійсний, виконайте вихід
+      logout();
+    }
+  }
   };
 
   return (

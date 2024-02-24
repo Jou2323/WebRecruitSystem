@@ -1,7 +1,7 @@
 package dev.mesh.recruitment.servises;
 
 
-import dev.mesh.recruitment.Test;
+import dev.mesh.recruitment.models.Test;
 import dev.mesh.recruitment.repositorys.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;

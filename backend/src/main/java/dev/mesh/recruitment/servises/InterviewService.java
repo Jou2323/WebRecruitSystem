@@ -1,15 +1,12 @@
 package dev.mesh.recruitment.servises;
 
-import dev.mesh.recruitment.Interview;
-import dev.mesh.recruitment.Test;
-import dev.mesh.recruitment.Vacancy;
+import dev.mesh.recruitment.models.Interview;
 import dev.mesh.recruitment.repositorys.CandidateRepository;
 import dev.mesh.recruitment.repositorys.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 @Service

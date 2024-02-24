@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-
+import { Link, useParams, useLocation } from "react-router-dom";
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
 
 export default function ViewResume() {
 
-
+    const { token, logout } = useAuth();
+    const location = useLocation();
     
     const [candidate,setVacancy]=useState({
         id:"",
@@ -24,12 +25,24 @@ export default function ViewResume() {
     const {id} = useParams()
 
     useEffect(() => {
+        if (token) {
         loadResume();  
-    },[])
+    }}, [location, token])
 
     const loadResume= async ()=>{
-        const result= await axios.get(`http://localhost:8080/candidates/${id}`);
+        try{
+        const result= await axios.get(`http://localhost:8080/candidates/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }});
         setVacancy(result.data);
+    }catch (error) {
+        console.error('Error loading resume:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
     }
     
 

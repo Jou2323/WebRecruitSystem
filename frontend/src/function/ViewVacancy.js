@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
+import { useParams, useLocation} from "react-router-dom";
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
 
 export default function ViewVacancy() {
 
-
+    const { token, logout } = useAuth();
+    const location = useLocation();
     
     const [vacancy,setVacancy]=useState({
         title:"" ,
@@ -23,13 +24,25 @@ export default function ViewVacancy() {
     const {id} = useParams()
 
     useEffect(() => {
+        if (token) {
         loadVacancy();  
-    },[])
+    }}, [location, token]);
 
     const loadVacancy= async ()=>{
-        const result= await axios.get(`http://localhost:8080/vacancies/${id}`);
+        try{
+        const result= await axios.get(`http://localhost:8080/vacancies/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }});
         setVacancy(result.data);
-    }
+    }catch (error) {
+        console.error('Error loading vacancy:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
+    };
 
     return(
         <div class="container">
@@ -56,5 +69,5 @@ export default function ViewVacancy() {
     </div>
     </div>
     </div>
-    )
+    );
 }

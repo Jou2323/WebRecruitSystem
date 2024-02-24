@@ -1,14 +1,12 @@
 package dev.mesh.recruitment.servises;
 
-import dev.mesh.recruitment.Candidate;
-import dev.mesh.recruitment.Report;
+import dev.mesh.recruitment.models.Report;
 import dev.mesh.recruitment.repositorys.ReportRepository;
 import dev.mesh.recruitment.repositorys.CandidateRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

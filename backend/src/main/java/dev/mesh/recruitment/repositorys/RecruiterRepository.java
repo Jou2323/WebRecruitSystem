@@ -1,6 +1,6 @@
 package dev.mesh.recruitment.repositorys;
 
-import dev.mesh.recruitment.Recruiter;
+import dev.mesh.recruitment.models.Recruiter;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

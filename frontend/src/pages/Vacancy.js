@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
 function rgb(r, g, b){
     r = Math.floor(r);
     g = Math.floor(g);
@@ -11,7 +11,8 @@ function rgb(r, g, b){
   }
     
 export default function Vacancy() {
-    
+    const { token, logout } = useAuth();
+    const locations = useLocation();
     let navigate = useNavigate();
 
 
@@ -38,28 +39,60 @@ export default function Vacancy() {
      setVacancy({...vacancy, [e.target.name]: e.target.value});
     }
     const onSubmitAdd=async (e)=>{
+        try {
         e.preventDefault();
-        await axios.post("http://localhost:8080/vacancies/addvacancy",vacancy)
+        await axios.post("http://localhost:8080/vacancies/addvacancy", vacancy,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+              } })
         navigate("/Vacancy");
+        } catch (error) {
+        console.error('Error loading vacancies:', error);
+        
+      }
        };
 
    
     const [vacancys,setVacancys]=useState([])
 
     useEffect(() => {
+        if (token) {
         loadVacancy();  
-    },[]);
+    }
+}, [locations, token]);
     
-
+    
     
     const loadVacancy= async ()=>{
-        const result= await axios.get("http://localhost:8080/vacancies/vacancys");
+        try {
+        const result= await axios.get("http://localhost:8080/vacancies/vacancys", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              } });
         setVacancys(result.data);
-    };
+    } catch (error) {
+        console.error('Error loading candidates:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
+    }
 
     const deleteVacancy=async (id)=>{
-        await axios.delete(`http://localhost:8080/vacancies/${id}`)
+        try {
+        await axios.delete(`http://localhost:8080/vacancies/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              } })
         loadVacancy()
+    } catch (error) {
+        console.error('Error loading vacancies:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
     }
     return(
      

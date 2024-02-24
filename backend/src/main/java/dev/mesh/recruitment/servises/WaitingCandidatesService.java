@@ -1,6 +1,6 @@
 package dev.mesh.recruitment.servises;
 
-import dev.mesh.recruitment.Candidate;
+import dev.mesh.recruitment.models.Candidate;
 import dev.mesh.recruitment.repositorys.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

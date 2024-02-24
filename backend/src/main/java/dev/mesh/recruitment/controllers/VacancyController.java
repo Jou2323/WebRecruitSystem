@@ -1,7 +1,7 @@
 package dev.mesh.recruitment.controllers;
 
-import dev.mesh.recruitment.Candidate;
-import dev.mesh.recruitment.Vacancy;
+import dev.mesh.recruitment.models.Candidate;
+import dev.mesh.recruitment.models.Vacancy;
 import dev.mesh.recruitment.servises.CandidateService;
 import dev.mesh.recruitment.servises.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/vacancies")
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin("http://localhost:3000")
 public class VacancyController {
 
     @Autowired

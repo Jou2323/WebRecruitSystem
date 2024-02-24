@@ -1,6 +1,6 @@
 // routes.js
+import React from 'react';
 import Position from './pages/Position'; 
-import Profile from './pages/Profile'; 
 import Report from './pages/Report'; 
 import Testdata from './pages/Testdata'; 
 import Vacancy from './pages/Vacancy'; 
@@ -15,15 +15,17 @@ import ViewResume from './function/ViewResume';
 import ViewVacancy from './function/ViewVacancy';
 import Home from './pages/Homepage'; 
 import Interview from './pages/Interview'; 
+import Profile from './pages/Profile'; 
+
 
 const routes = [
   { path: '/Homepage', element: <Home /> },
   { path: '/Vacancy', element: <Vacancy /> },
   { path: '/Interview', element: <Interview /> },
   { path: '/Position', element: <Position /> },
-  { path: '/Profile', element: <Profile /> },
   { path: '/Report', element: <Report /> },
   { path: '/Testdata', element: <Testdata /> },
+  { path: '/Profile', element: <Profile /> },
   { path: '/ViewVacancy/:id', element: <ViewVacancy /> },
   { path: '/ResumeDetail/:id', element: <ViewResume /> },
   { path: '/Vacancy/:id', element: <EditVacancy /> },

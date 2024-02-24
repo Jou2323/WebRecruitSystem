@@ -1,11 +1,7 @@
 package dev.mesh.recruitment.controllers;
 
-import dev.mesh.recruitment.Candidate;
-import dev.mesh.recruitment.Test;
-import dev.mesh.recruitment.Vacancy;
-import dev.mesh.recruitment.servises.CandidateService;
+import dev.mesh.recruitment.models.Test;
 import dev.mesh.recruitment.servises.TestService;
-import dev.mesh.recruitment.servises.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/test")
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin("http://localhost:3000")
 public class TestController {
 
     @Autowired

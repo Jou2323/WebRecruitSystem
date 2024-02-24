@@ -1,12 +1,8 @@
-package dev.mesh.recruitment;
+package dev.mesh.recruitment.models;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.lang.reflect.Array;
 import java.util.Date;
-import java.util.List;
 
 public class Candidate {
     @Id
@@ -24,7 +20,9 @@ public class Candidate {
     private String position;
     private Date lastUpdated;
     private Vacancy vacancyId;
+    public Candidate() {
 
+    }
     public Candidate(String name, String email, String phoneNumber, String file, String motivationLetter, String status,String position) {
 
         this.name = name;

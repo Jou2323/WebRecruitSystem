@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../AuthContext'; // Шлях до AuthContext.js
+import "../App.css"
 function rgb(r, g, b){
     r = Math.floor(r);
     g = Math.floor(g);
@@ -11,7 +12,8 @@ function rgb(r, g, b){
   }
     
 export default function Interview() {
-    
+    const { token, logout } = useAuth();
+  const location = useLocation();
     let navigate = useNavigate();
     
     const [interview,setInterview]=useState({
@@ -29,18 +31,30 @@ export default function Interview() {
         setInterview({...interview, [e.target.name]: e.target.value});
     }
     const onSubmitAdd=async (e)=>{
+        try{
         e.preventDefault();
-        await axios.post("http://localhost:8080/interviews/addinterview",interview)
+        await axios.post("http://localhost:8080/interviews/addinterview",interview, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }})
         navigate("/Interview");
+    }catch (error) {
+        console.error('Error loading interview:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
        };
 
    
     const [interviews, setInterviews]=useState([])
 
     useEffect(() => {
+        if (token) {
         loadInterview();  
         loadCandidates();  
-    },[]);
+    }}, [location, token]);
 
  
     const [candidates,setCandidates]=useState([])
@@ -48,20 +62,53 @@ export default function Interview() {
 
     
     const loadCandidates= async ()=>{
-        const result= await axios.get("http://localhost:8080/candidates/candidatesall");
+        try{
+        const result= await axios.get("http://localhost:8080/candidates/candidatesall", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }});
         setCandidates(result.data);
+    }catch (error) {
+        console.error('Error loading interview:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
     };
    
     
     const loadInterview= async ()=>{
-        const result= await axios.get("http://localhost:8080/interviews/interviewAll");
+        try{
+        const result= await axios.get("http://localhost:8080/interviews/interviewAll", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }});
         setInterviews(result.data);
+    }catch (error) {
+        console.error('Error loading interview:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
     };
 
     const deleteInterview=async (id)=>{
-        await axios.delete(`http://localhost:8080/interviews/${id}`);
+        try{
+        await axios.delete(`http://localhost:8080/interviews/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }});
         loadInterview()
-    }
+    }catch (error) {
+        console.error('Error loading interview:', error);
+        if (error.response && error.response.status === 401) {
+          // Якщо токен протух або не дійсний, виконайте вихід
+          logout();
+        }
+      }
+    };
     return(
      
 <div class="d-flex flex-column" id="content-wrapper">
@@ -202,7 +249,6 @@ export default function Interview() {
                     </div>
                 </div>
         </div>
-        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"></link>
     </div>
     
     )
