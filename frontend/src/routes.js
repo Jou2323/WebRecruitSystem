@@ -16,8 +16,9 @@ import ViewVacancy from './function/ViewVacancy';
 import Home from './pages/Homepage'; 
 import Interview from './pages/Interview'; 
 import Profile from './pages/Profile'; 
-
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 const routes = [
   { path: '/Homepage', element: <Home /> },
   { path: '/Vacancy', element: <Vacancy /> },

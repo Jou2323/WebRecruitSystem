@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import ImageUpload from '../function/ImageUpload';
 import '../App.css'
 const Profile = () => {
-    const { token, logout } = useAuth();
+    const { token } = useAuth();
     const location = useLocation();
     const [userData, setUserData] = useState(null);
 
@@ -58,7 +58,7 @@ const Profile = () => {
                                         <div class="card-body">
                                         <div>
                                         {userData ? (
-        <div>
+        <div id="profile">
           <p>First Name: {userData.firstName}</p>
           <p>Last Name: {userData.lastName}</p>
           <p>Login: {userData.login}</p>

@@ -3,7 +3,11 @@ import React from 'react';
 import NavbarHead from "./layout/NavbarHead";
 import routes from './routes.js';
 import { Routes, Route } from 'react-router-dom'; // Import useNavigate
-
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'jquery';
 
 const AppContent = () => {
 

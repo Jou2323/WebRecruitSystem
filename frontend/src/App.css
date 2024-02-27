@@ -63,17 +63,127 @@
  }
  
 
- 
- /* Button */
-#dataTable tr a.btn-primary{
-  position:static;
-  transform:translatex(-5px) translatey(19px);
- }
+
  
  /* Table Data */
  #dataTable tbody td{
   text-transform:capitalize;
   text-align:center;
+ }
+ 
+ /* Image */
+.App img{
+  transform:translatex(13px) translatey(-8px);
+ }
+ 
+ /* Font Icon */
+ .App .d-inline .fa-angle-up{
+  width:39px;
+  min-height:36px;
+  transform:translatex(0px) translatey(12px);
+ }
+ 
+ /* Inline */
+ #root .App .d-inline{
+  display:inline-block !important;
+  height:44px;
+  transform:translatex(652px) translatey(-37px);
+ }
+ /* Inline */
+#root .App .d-inline{
+  transform:translatex(647px) translatey(19px);
+ }
+ 
+ /* Span Tag */
+ .App .copyright span{
+  display:inline-block;
+  height:29px;
+  transform:translatex(0px) translatey(61px);
+ }
+ 
+/* Button */
+#content .row .btn-primary{
+  height:45px;
+  position:relative;
+  left:0px;
+  top:2px;
+ }
+ 
+ 
+  
+ /* Division */
+.col-lg-4 .card div{
+  min-height:121px;
+  transform:translatex(0px) translatey(0px);
+ }
+ 
+ /* Button */
+ .col-lg-4 div button{
+  transform:translatex(0px) translatey(50px);
+ }
+ 
+ /* Input */
+ .App div input[type=file]{
+  transform:translatex(0px) translatey(30px);
+ }
+ 
+ /* Span Tag */
+ .App .copyright span{
+  transform:translatex(3px) translatey(0px);
+ }
+ 
+ /* Profile */
+#profile{
+  width:40% !important;
+  transform:translatex(251px) translatey(11px);
+ }
+ 
+ /* Paragraph */
+#profile p{
+  min-height:34px;
+  transform:translatex(20px) translatey(29px);
+  width:34%;
+ }
+ 
+ /* Form Division */
+ #profile form{
+  transform:translatex(272px) translatey(-146px);
+  min-height:170px;
+  width:62%;
+ }
+ 
+
+ 
+ /* Profile */
+ #profile{
+  width:848px !important;
+  height:223px;
+  transform:translatex(-10px) translatey(-9px);
+ }
+ 
+ /* Division */
+ #profile form div{
+  transform:translatex(50px) translatey(9px);
+  display:grid;
+  width:76%;
+ }
+ 
+ /* Input */
+ #profile div input[type=text]{
+  transform:translatex(31px) translatey(-3px);
+  position:relative;
+  top:3px;
+  left:-1px;
+ }
+ 
+ /* Input */
+ #profile div input[type=password]{
+  transform:translatex(15px) translatey(0px);
+ }
+ 
+ /* Label */
+ #profile div label{
+  margin-bottom:10px;
  }
  
  

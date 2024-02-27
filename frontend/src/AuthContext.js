@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-
+import './index.css';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

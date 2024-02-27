@@ -1,5 +1,16 @@
 (function() {
   "use strict"; // Start of use strict
+// Custom theme code
+
+if (document.getElementsByClassName('clean-gallery').length > 0) {
+  baguetteBox.run('.clean-gallery', { animation: 'slideIn' });
+}
+
+if (document.getElementsByClassName('clean-product').length > 0) {
+   window.onload = function() {
+       vanillaZoom.init('#product-preview');
+   };
+}
 
   var sidebar = document.querySelector('.sidebar');
   var sidebarToggles = document.querySelectorAll('#sidebarToggle, #sidebarToggleTop');

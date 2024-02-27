@@ -41,6 +41,7 @@ const ProfileForm = ({ userData }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div id="profile2">
       <label>
         First Name:
         <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
@@ -58,6 +59,7 @@ const ProfileForm = ({ userData }) => {
         <input type="password" name="password" value={formData.password} onChange={handleChange} />
       </label>
       <button type="submit">Save Changes</button>
+      </div>
     </form>
   );
 };

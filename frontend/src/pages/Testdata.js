@@ -177,7 +177,12 @@ export default function Testdata() {
                                             <td class="text-center"> {test.title}</td>  
                                             <td class="text-center"><a href={test.link}>Link</a></td>
                                             <td class="text-center">{test.date_create}</td>
-                                            <Link class="btn btn-primary" style={{marginTop: '21px',marginBottom: '21px', marginLeft: '15px', background: rgb(223,182,78)}} to={`/Testdata/${test.id}`}><span class="text-white-50 icon" style={{paddingright: '0px', marginright: '11px'}}><i class="fas fa-exclamation-triangle"></i></span>Edit</Link>
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+  <Link class="btn btn-primary" style={{ marginTop: '21px', marginBottom: '21px', background: 'rgb(223, 182, 78)' }} to={`/Testdata/${test.id}`}>
+    <span class="text-white-50 icon" style={{ paddingRight: '0px', marginRight: '11px' }}><i class="fas fa-exclamation-triangle"></i></span>Edit
+  </Link>
+</div>
+
                                             <td class="text-center"><button class="btn btn-primary" onClick={()=>deleteTest(test.id)} style={{marginTop: '15px',marginBottom: '21px', marginLeft: '11px', background: rgb(223,87,78)}}><span class="text-white-50 icon" style={{marginRight: '5px' }}><i class="fas fa-trash" ></i></span>Delete</button></td>
                                         </tr>
                                             ))
