@@ -20,15 +20,16 @@ const LoginForm = ({ onLoginSuccess }) => {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    
 
     try {
+      e.preventDefault();
       const response = await axios.post('http://localhost:8080/login', formData);
       const token = response.data.token;
       // Збереження Bearer Token
       localStorage.setItem('token', token);
       onLoginSuccess(token);
-      navigate("/Homepage");
+      navigate("/");
     } catch (error) {
       console.error('Login failed:', error);
       // Обробка помилок входу
@@ -55,10 +56,8 @@ const LoginForm = ({ onLoginSuccess }) => {
                                         <div class="mb-3">
                                         
                                         </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
-                                        <hr/>
-                                        <a className="btn btn-danger d-block btn-google btn-user w-100 mb-2" role="button"><FaGoogle />&nbsp; Login with Google</a>
-                                        <a class="btn btn-primary d-block btn-facebook btn-user w-100 " role="button"><FaFacebook />&nbsp; Login with Facebook</a>
-                                        <hr/>
+                                        
+                                      
                                     </form>
 
                                     <hr/>

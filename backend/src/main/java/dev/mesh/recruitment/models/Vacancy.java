@@ -1,5 +1,6 @@
 package dev.mesh.recruitment.models;
 
+import dev.mesh.recruitment.entites.User;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -20,7 +21,7 @@ public class Vacancy {
     @DBRef
     private List<Candidate> candidatesIds;
     @DBRef
-    private Recruiter recruiterIds;
+    private User recruiterIds;
     public Vacancy() {
         // Default constructor
     }
@@ -36,7 +37,7 @@ public class Vacancy {
         this.status = status;
     }
 
-    public void setRecruiterIds(Recruiter recruiterIds) {
+    public void setRecruiterIds(User recruiterIds) {
         this.recruiterIds = recruiterIds;
     }
     public String getCost() {
@@ -109,7 +110,7 @@ public class Vacancy {
     public List<Candidate> getCandidatesIds() {
         return candidatesIds;
     }
-    public Recruiter getRecruiterIds() {
+    public User getRecruiterIds() {
         return recruiterIds;
     }
     public void setCandidatesIds(List<Candidate> candidatesIds) {

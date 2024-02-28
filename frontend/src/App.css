@@ -151,6 +151,65 @@
   min-height:170px;
   width:62%;
  }
+ /* Text center */
+#content thead .text-center{
+  margin-left:0px;
+ }
+ 
+ /* Text center */
+ #root .App #content-wrapper #content .container-fluid .card .card-body .table .table thead tr .text-center{
+  width:107px !important;
+ }
+ 
+ /* App */
+ #root .App{
+  transform:translatex(0px) translatey(0px);
+ }
+ 
+ /* Span Tag */
+ .App .copyright span{
+  transform:translatex(4px) translatey(23px);
+ }
+ 
+ /* Col 10 */
+#root .col-xxl-10{
+  position:relative;
+  top:80px;
+ }
+ /* Icon pencil */
+.landing-page .clean-block .icon-pencil{
+  transform:translatex(0px) translatey(0px);
+  left:-25px;
+  right:auto !important;
+ }
+ 
+ /* Icon refresh */
+ .landing-page .clean-block .icon-refresh{
+  left:-25px;
+  right:auto !important;
+ }
+ 
+ /* Italic Tag */
+ .landing-page .feature-box i{
+  left:-25px;
+  right:auto !important;
+ }
+ 
+ 
+ 
+ /* Link */
+.flex-nowrap .nav-link a{
+  transform:translatex(-7px) translatey(-15px);
+  position:relative;
+  left:-1px;
+  top:2px;
+ }
+ 
+ /* Link */
+ #root .App .navbar .container-fluid .flex-nowrap .nav-item .nav-item .dropdown-menu-end .nav-link a{
+  width:112% !important;
+ }
+ 
  
 
  

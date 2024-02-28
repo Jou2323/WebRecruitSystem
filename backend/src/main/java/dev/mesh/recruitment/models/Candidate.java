@@ -11,10 +11,10 @@ public class Candidate {
     private String name;
     private String email;
     private String phoneNumber;
-
+    private byte[] file;
     private Integer yearsOfExperience;
     private String skills;
-    private String file;
+
     private String motivationLetter;
     private String status;
     private String position;
@@ -23,12 +23,13 @@ public class Candidate {
     public Candidate() {
 
     }
-    public Candidate(String name, String email, String phoneNumber, String file, String motivationLetter, String status,String position) {
+    public Candidate(String name, String email, String phoneNumber,byte[] file, String motivationLetter, String status,String position) {
 
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.file = file;
+
         this.motivationLetter = motivationLetter;
         this.status = status;
         this.position = position;
@@ -129,11 +130,13 @@ public class Candidate {
         this.skills = skills;
     }
 
-    public String getFile() {
+
+
+    public byte[] getFile() {
         return file;
     }
 
-    public void setFile(String file) {
+    public void setFile(byte[] file) {
         this.file = file;
     }
 }

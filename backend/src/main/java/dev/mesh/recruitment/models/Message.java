@@ -1,8 +1,11 @@
 package dev.mesh.recruitment.models;
 
+import dev.mesh.recruitment.entites.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 
 public class Message {
@@ -20,7 +23,7 @@ public class Message {
     @DBRef
     private String candidateId;
     @DBRef
-    private Recruiter recruiterId;
+    private User recruiterId;
 
     public String getCandidateId() {
         return candidateId;
@@ -30,11 +33,11 @@ public class Message {
         this.candidateId = candidateId;
     }
 
-    public Recruiter getRecruiterId() {
+    public User getRecruiterId() {
         return recruiterId;
     }
 
-    public void setRecruiterId(Recruiter recruiterId) {
+    public void setRecruiterId(User recruiterId) {
         this.recruiterId = recruiterId;
     }
 

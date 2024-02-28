@@ -1,18 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route    } from 'react-router-dom';
-import { createRoot } from "react-dom/client";
 import Login from './function/LoginForm';
 import Registretion from './function/RegistrationForm';
 import { AuthProvider } from './AuthContext';
 import AppContent from './AppContent';
-import Homepage_user from './pages/Homepage_user'
-import Vacancy_user from './pages/Vacancy_user';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import HomepageUser from './pages/HomepageUser.js'
+import VacancyUser from './pages/VacancyUser.js';
 import ViewVacancyUser from './function/ViewVacancyUser';
-import 'bootstrap/dist/js/bootstrap.min.js';
-import './assets/js/theme.js';
-import './assets/js/vanilla-zoom.js';
-import './assets/js/Referral-Product-List-Amazon-theme.js';
+import NavbarHeadUser from './layout/NavbarHeadUser.js';
+
 
 const Authorization = () => {
   const handleRegistrationSuccess = (token) => {
@@ -34,11 +30,14 @@ const Authorization = () => {
 const UserView = () => {
 
   return (
+    <>
+    <NavbarHeadUser/>
     <Routes>
-          <Route path='/Home' element={<Homepage_user />} />
-        <Route path='/Vacancy' element={<Vacancy_user />} />
+        <Route path='/Home' element={<HomepageUser />} />
+        <Route path='/Vacancy' element={<VacancyUser />} />
         <Route path='/ViewVacancyUser/:id' element={<ViewVacancyUser/>}/>
     </Routes>
+    </>
   );
 };
 const App = () => {

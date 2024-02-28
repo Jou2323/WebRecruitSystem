@@ -5,8 +5,9 @@ import dev.mesh.recruitment.servises.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/admin")
@@ -48,12 +49,13 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/candidates")
-    public ResponseEntity<Candidate> madeApplication(@RequestBody Candidate candidate) throws IOException {
-        Candidate newCandidate = candidateService.madeApplication(candidate);
-        return new ResponseEntity<>(newCandidate, HttpStatus.CREATED);
+    @PostMapping("/appresume")
+    public ResponseEntity<Candidate> madeApplication(
+            @RequestParam("resumeFile") MultipartFile resumeFile,
+            @ModelAttribute Candidate candidate) {
+        Candidate madeApplication = candidateService.madeApplication(candidate, resumeFile);
+        return ResponseEntity.created(URI.create("/candidates/" + madeApplication.getId())).body(madeApplication);
     }
-
     @PutMapping("/candidates/{id}")
     public ResponseEntity<Candidate> updateCandidate(@PathVariable String id, @RequestBody Candidate candidate) {
         Candidate updatedCandidate = candidateService.updateCandidate(id, candidate);

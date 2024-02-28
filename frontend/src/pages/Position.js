@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback  } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ export default function Position() {
     let navigate = useNavigate();
     const { token, logout } = useAuth();
     const location = useLocation();
-
+    const [searchTerm, setSearchTerm] = useState("");
    
     const [employee,setEmployee]=useState({
         email:"",
@@ -85,15 +85,9 @@ export default function Position() {
     const [employees,setEmployees]=useState([])
 const [positionests,setPositions]=useState([])
 
-    useEffect(() => {
-        if (token) {
-        loadEmployee();  
-        loadPosition();
-    }}, [location, token]);
+ 
     
-
-    
-    const loadEmployee= async ()=>{
+const loadEmployee = useCallback(async () => {
         try{
         const result= await axios.get("http://localhost:8080/employee/employees", {
             headers: {
@@ -107,8 +101,8 @@ const [positionests,setPositions]=useState([])
           logout();
         }
       }
-    };
-    const loadPosition= async ()=>{
+    }, [token, logout]);
+    const loadPosition = useCallback(async () => {
         try{
         const result= await axios.get("http://localhost:8080/positions/allposition", {
             headers: {
@@ -122,7 +116,7 @@ const [positionests,setPositions]=useState([])
           logout();
         }
       }
-    };
+    }, [token, logout]);
     const deleteEmployee=async (id)=>{
         try{
         await axios.delete(`http://localhost:8080/employee/${id}`, {
@@ -153,6 +147,25 @@ const [positionests,setPositions]=useState([])
         }
       }
     };
+    useEffect(() => {
+        if (token) {
+        loadEmployee();  
+        loadPosition();
+    }}, [location, token, loadEmployee, loadPosition]);
+    
+    const onSearchInputChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+    const onSearchInputChange2 = (e) => {
+        setSearchTerm(e.target.value);
+    };
+    const filteredPosition = positionests.filter((positionest) =>
+    positionest.title.toLowerCase().includes(searchTerm.toLowerCase())
+);   
+const filteredEmployee = employees.filter((employee) =>
+employee.position.toLowerCase().includes(searchTerm.toLowerCase())
+);   
+
     return(
      
 <div class="d-flex flex-column" id="content-wrapper">
@@ -288,9 +301,20 @@ const [positionests,setPositions]=useState([])
                                 
                                
                             </div>
-                                <div class="col-md-12">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter" ><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"/></label></div>
-                                </div>
+                            <div class="col-md-6">
+    <div class="text-md-end dataTables_filter" id="dataTable_filter">
+        <label class="form-label">
+            <input
+                type="search"
+                class="form-control form-control-sm"
+                aria-controls="dataTable"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={onSearchInputChange}
+            />
+        </label>
+    </div>
+</div>
                             </div>
                             <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                 <table class="table my-0" id="dataTable">
@@ -310,7 +334,7 @@ const [positionests,setPositions]=useState([])
                                     <tbody>
                                         
                                         {
-                                            employees.map((employee)=>(
+                                            filteredEmployee.map((employee)=>(
                                                 <tr>
                                             <td class="me-xl-0" >{employee.id}</td>
                                             <td>{employee.name}</td>
@@ -364,12 +388,23 @@ const [positionests,setPositions]=useState([])
                                 
                                
                             </div>
-                                <div class="col-md-12">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter" ><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"/></label></div>
-                                </div>
+                            <div class="col-md-6">
+    <div class="text-md-end dataTables_filter" id="dataTable_filter">
+        <label class="form-label">
+            <input
+                type="search"
+                class="form-control form-control-sm"
+                aria-controls="dataTable2"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={onSearchInputChange2}
+            />
+        </label>
+    </div>
+</div>
                             </div>
                             <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                                <table class="table my-0" id="dataTable">
+                                <table class="table my-0" id="dataTable2">
                                     <thead>
                                         <tr>
                                             <th>IP</th>
@@ -387,7 +422,7 @@ const [positionests,setPositions]=useState([])
                                     <tbody>
                                         
                                         {
-                                            positionests.map((positionest)=>(
+                                            filteredPosition.map((positionest)=>(
                                                 <tr>
                                             <td class="me-xl-0" >{positionest.id}</td>
                                             <td>{positionest.title}</td>
@@ -402,7 +437,7 @@ const [positionests,setPositions]=useState([])
     <span class="text-white-50 icon" style={{ paddingRight: '0px', marginRight: '11px' }}><i class="fas fa-exclamation-triangle"></i></span>Edit
   </Link>
   <Link class="btn btn-primary" style={{ marginTop: '21px', marginBottom: '21px', marginLeft: '15px', background: 'rgb(0,98,255)' }} to={`/Assign/${positionest.id}`}>
-    <span class="text-white-50 icon" style={{ paddingRight: '0px', marginRight: '11px' }}><i class="fas fa-exclamation-triangle"></i></span>AsassignEmployeeToPosition
+    <span class="text-white-50 icon" style={{ textalign:'center', marginRight: '11px' }}></span><i class="fas fa-exclamation-triangle"></i><br />Asassign<br />Employee<br />To<br />Position
   </Link>
 </div>
 <td class="text-center"><button class="btn btn-primary" onClick={()=>deletePosition(positionest.id)} style={{marginTop: '15px',marginBottom: '21px', marginLeft: '11px', background: rgb(223,87,78)}}><span class="text-white-50 icon" style={{marginRight: '5px' }}><i class="fas fa-trash" ></i></span>Delete</button></td>

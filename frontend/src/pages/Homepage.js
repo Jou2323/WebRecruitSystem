@@ -14,8 +14,8 @@ export default function Homepage() {
                     <div class="text">
                         <h2>Головна сторінка</h2>
                         <p>«Система підбору персоналу: представляємо нашу передову програму індивідуального підбору персоналу!»</p><Link class="btn btn-outline-light btn-lg" type="button" to="/User/Home">Learn More</Link>
-                        <Link to="/Authrization/Registretion">Register</Link>
-                       <Link to="/Authrization/Login">Login</Link>
+                        <Link class="btn btn-outline-light btn-lg" type="button" to="/Authrization/Registretion">Register</Link>
+                       <Link class="btn btn-outline-light btn-lg" type="button" to="/Authrization/Login">Login</Link>
                     </div>
                 </section>
                 

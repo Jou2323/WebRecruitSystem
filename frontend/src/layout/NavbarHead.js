@@ -41,7 +41,7 @@ export default function NavbarHead() {
 <div class="sidebar-brand-text mx-3"><span>RECRUTER</span></div>
 <hr class="sidebar-divider my-0"/>
 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><Link class="nav-link"  to="/Homepage">Home</Link></li>
+                    <li class="nav-item"><Link class="nav-link"  to="/">Home</Link></li>
                     <li class="nav-item"><Link className="nav-link" to="/Vacancy"><i class="fas fa-table"></i><span>&nbsp;Vacancy</span></Link></li>
                     <li class="nav-item"><Link class="nav-link" to="/Report"><i class="fas fa-user-circle"></i><span>&nbsp;Report</span></Link></li>
                     <li class="nav-item"><Link class="nav-link" to="/Interview"><i class="far fa-comments"></i><span>&nbsp;Interview</span></Link></li>
@@ -78,7 +78,9 @@ export default function NavbarHead() {
                                         
               
              
-           <a class="dropdown-item"  href="/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                        <a class="dropdown-item" onClick={logout}>
+  <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout
+</a>
                                     </div>
                                 </div>
                             </li>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback  } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,10 @@ export default function Interview() {
     const { token, logout } = useAuth();
   const location = useLocation();
     let navigate = useNavigate();
-    
+    const [searchTerm, setSearchTerm] = useState("");
+    const [interviews, setInterviews]=useState([]) 
+    const [candidates,setCandidates]=useState([])
+   
     const [interview,setInterview]=useState({
         title:"",
         email:"" ,
@@ -48,20 +51,10 @@ export default function Interview() {
        };
 
    
-    const [interviews, setInterviews]=useState([])
-
-    useEffect(() => {
-        if (token) {
-        loadInterview();  
-        loadCandidates();  
-    }}, [location, token]);
-
- 
-    const [candidates,setCandidates]=useState([])
     
-
+     
     
-    const loadCandidates= async ()=>{
+    const loadCandidates = useCallback(async () => {
         try{
         const result= await axios.get("http://localhost:8080/candidates/candidatesall", {
             headers: {
@@ -69,16 +62,16 @@ export default function Interview() {
               }});
         setCandidates(result.data);
     }catch (error) {
-        console.error('Error loading interview:', error);
+        console.error('Error loading position:', error);
         if (error.response && error.response.status === 401) {
           // Якщо токен протух або не дійсний, виконайте вихід
           logout();
         }
       }
-    };
+    }, [token, logout]);
    
     
-    const loadInterview= async ()=>{
+    const loadInterview = useCallback(async () => {
         try{
         const result= await axios.get("http://localhost:8080/interviews/interviewAll", {
             headers: {
@@ -92,7 +85,7 @@ export default function Interview() {
           logout();
         }
       }
-    };
+    }, [token, logout]);
 
     const deleteInterview=async (id)=>{
         try{
@@ -109,6 +102,18 @@ export default function Interview() {
         }
       }
     };
+    useEffect(() => {
+        if (token) {
+            loadInterview();
+            loadCandidates();
+        }
+    }, [location, token, loadInterview, loadCandidates]);
+    const onSearchInputChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+    const filteredInterview = interviews.filter((interview) =>
+    interview.title.toLowerCase().includes(searchTerm.toLowerCase())
+);    
     return(
      
 <div class="d-flex flex-column" id="content-wrapper">
@@ -197,8 +202,19 @@ export default function Interview() {
                                             </select>&nbsp;</label></div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"/></label></div>
-                                </div>
+    <div class="text-md-end dataTables_filter" id="dataTable_filter">
+        <label class="form-label">
+            <input
+                type="search"
+                class="form-control form-control-sm"
+                aria-controls="dataTable"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={onSearchInputChange}
+            />
+        </label>
+    </div>
+</div>
                             </div>
                             <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                 <table class="table my-0" id="dataTable">
@@ -216,7 +232,7 @@ export default function Interview() {
                                     <tbody>
                                         
                                         {
-                                            interviews.map((interview)=>(
+                                            filteredInterview.map((interview)=>(
                                                 <tr>
                                             <td class="me-xl-0"  >{interview.id}</td>
                                             <td> {interview.title}</td>

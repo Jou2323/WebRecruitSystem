@@ -1,7 +1,6 @@
 package dev.mesh.recruitment.models;
 
-import dev.mesh.recruitment.models.Candidate;
-import dev.mesh.recruitment.models.Recruiter;
+import dev.mesh.recruitment.entites.User;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +13,7 @@ public class Report {
     private String title;
     private String email;
     private String feedback;
-    private Recruiter recruiterId;
+    private User recruiterId;
     private Candidate candidateId;
 
 
@@ -55,11 +54,11 @@ public class Report {
         this.candidateId = candidateId;
     }
 
-    public Recruiter getRecruiterId() {
+    public User getRecruiterId() {
         return recruiterId;
     }
 
-    public void setRecruiterId(Recruiter recruiterId) {
+    public void setRecruiterId(User recruiterId) {
         this.recruiterId = recruiterId;
     }
 

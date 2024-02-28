@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback  } from 'react';
 import { Link, useLocation} from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ export default function Vacancy() {
     const { token, logout } = useAuth();
     const locations = useLocation();
     let navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState("");
+
 
 
    
@@ -55,29 +57,32 @@ export default function Vacancy() {
    
     const [vacancys,setVacancys]=useState([])
 
-    useEffect(() => {
-        if (token) {
-        loadVacancy();  
-    }
-}, [locations, token]);
+ 
+    const onSearchInputChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+    const filteredVacancies = vacancys.filter((vacancy) =>
+    vacancy.title.toLowerCase().includes(searchTerm.toLowerCase())
+);    
     
     
-    
-    const loadVacancy= async ()=>{
+    const loadVacancy = useCallback(async () => {
         try {
-        const result= await axios.get("http://localhost:8080/vacancies/vacancys", {
-            headers: {
-                'Authorization': `Bearer ${token}`
-              } });
-        setVacancys(result.data);
-    } catch (error) {
-        console.error('Error loading candidates:', error);
-        if (error.response && error.response.status === 401) {
-          // Якщо токен протух або не дійсний, виконайте вихід
-          logout();
+            const result = await axios.get("http://localhost:8080/vacancies/vacancys", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setVacancys(result.data);
+        } catch (error) {
+            console.error('Error loading candidates:', error);
+            if (error.response && error.response.status === 401) {
+                // Если токен устарел или недействителен, выполните выход
+                logout();
+            }
         }
-      }
-    }
+    }, [token, logout]);
+
 
     const deleteVacancy=async (id)=>{
         try {
@@ -94,6 +99,12 @@ export default function Vacancy() {
         }
       }
     }
+    useEffect(() => {
+        if (token) {
+            loadVacancy();  
+        }
+    }, [locations, token, loadVacancy]);
+    
     return(
      
 <div class="d-flex flex-column" id="content-wrapper">
@@ -186,8 +197,20 @@ export default function Vacancy() {
                                             </select>&nbsp;</label></div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"/></label></div>
-                                </div>
+    <div class="text-md-end dataTables_filter" id="dataTable_filter">
+        <label class="form-label">
+            <input
+                type="search"
+                class="form-control form-control-sm"
+                aria-controls="dataTable"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={onSearchInputChange}
+            />
+        </label>
+    </div>
+</div>
+
                             </div>
                             <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                 <table class="table my-0" id="dataTable">
@@ -208,7 +231,7 @@ export default function Vacancy() {
                                     <tbody>
                                         
                                         {
-                                            vacancys.map((vacancy)=>(
+                                            filteredVacancies.map((vacancy)=>(
                                                 <tr>
                                             <td class="me-xl-0"  >{vacancy.id}</td>
                                             <td> {vacancy.title}</td>

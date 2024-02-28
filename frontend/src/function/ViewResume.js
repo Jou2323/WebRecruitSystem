@@ -28,6 +28,32 @@ export default function ViewResume() {
         if (token) {
         loadResume();  
     }}, [location, token])
+const handleFileDownload = async () => {
+    try {
+        // Make an API call to download the file
+        const response = await axios.get(`http://localhost:8080/candidates/downloadFile/${id}`, {
+             responseType: 'arraybuffer' ,
+             headers: {
+                 'Authorization': `Bearer ${token}`
+             }
+            });
+
+        // Create a Blob from the response data
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+
+        // Create a download link and trigger a click to download the file
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'resume.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } catch (error) {
+        // Handle error
+        console.error(error);
+    }
+};
 
     const loadResume= async ()=>{
         try{
@@ -70,7 +96,12 @@ export default function ViewResume() {
                         </div>
                         </div>     
                         <p class="d-xl-flex justify-content-xl-center align-items-xl-center" style={{paddingright: '0px', marginright: '12px'}}>Resume:</p>
-                        <a class="d-xl-flex justify-content-xl-center align-items-xl-center"  style={{marginTop: '-15px'}}><a href={candidate.file}>Link_resume</a></a> 
+                        <p class="d-xl-flex justify-content-xl-center align-items-xl-center" style={{ paddingright: '0px', marginright: '12px' }}>
+        <a onClick={handleFileDownload} download="resume.pdf" class="btn btn-primary">
+          Download Resume
+        </a>
+      </p>
+
                         <div class="d-flex flex-column ms-auto justify-content-xl-center align-items-xl-center" style={{width: '110.406px',paddingleft: '0px', paddingright: '0px', marginright: '36px;'}}><Link to="/MessageTest"><button class="btn btn-primary flex-column" type="button" style={{position: 'relative', marginright: '-36px',marginBottom: '12px'}}>Send Test</button></Link></div>  </div>   
                 </div>
             </div>

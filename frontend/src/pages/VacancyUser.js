@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import $ from 'jquery';
 
-
-  
 const VacancyList = () => {
   const [vacancies, setVacancies] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  
+  const [selectedFile, setSelectedFile] = useState(null);
 
+  let navigate = useNavigate();
   const [candidateData, setCandidateData] = useState({
     name: '',
     email: '',
@@ -16,34 +18,61 @@ const VacancyList = () => {
     yearsOfExperience: 0,
     skills: '',
     motivationLetter: '',
-    position: '',
+    position: ''
   });
-
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
   const handleChange = (e) => {
     setCandidateData({ ...candidateData, [e.target.name]: e.target.value });
   };
+  // Import necessary libraries
 
-  const handleSubmit = () => {
-    // Send candidate data to your API endpoint for submitting the resume
-    axios.post('http://localhost:8080/candidates/appresume', {
-      ...candidateData
-    })
-      .then(response => console.log('Resume submitted successfully', response))
-      .catch(error => console.error('Error submitting resume', error));
-  };
+
+
+// Implement the file upload UI and call handleFileUpload when needed
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const formData = new FormData();
+  formData.append('resumeFile', selectedFile);
+  formData.append('name', candidateData.name);
+  formData.append('email', candidateData.email);
+  formData.append('phoneNumber', candidateData.phoneNumber);
+  formData.append('yearsOfExperience', candidateData.yearsOfExperience);
+  formData.append('skills', candidateData.skills);
+  formData.append('motivationLetter', candidateData.motivationLetter);
+  formData.append('position', candidateData.position);
+
+  try {
+    const response = await axios.post('http://localhost:8080/candidates/appresume', formData);
+    console.log('Resume submitted successfully', response);
+
+    toast.success('Резюме відправлено успішно!', {
+      position: 'top-right',
+      autoClose: 3000, // час автоматичного закриття сповіщення (у мілісекундах)
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+
+    $(`#modal-${vacancies.id}`).modal('hide');
+    navigate("/User/Vacancy");
+  } catch (error) {
+    console.error('Error submitting resume', error);
+  }
+};
+
+
   useEffect(() => {
+    
     // Fetch the list of vacancies from your API
     axios.get('http://localhost:8080/vacancies/vacancys')
       .then(response => setVacancies(response.data))
       .catch(error => console.error('Error fetching vacancies', error));
   }, []);
-  const handleSendLetter = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  
   
   return (
     
@@ -166,10 +195,11 @@ const VacancyList = () => {
                                       className="form-control"
                                       placeholder='Enter position'
                                       name = "position" style={{marginRight: "14px", marginBottom: "0px", paddingBottom: "1px", paddingLeft: "4px", marginLeft: "16px", width: "386px", height: "111px"}} value={candidateData.position} onChange={(e)=>handleChange(e)}></textarea>
-                                      
+                                       <label class="form-label">Resume</label>
+                                       <input type="file" name="resumeFile" onChange={(e) => handleFileChange(e)} />
                                       </div>
       <div className="modal-footer">
-        <button className="btn btn-success" type="button" onClick={handleSubmit}>
+        <button className="btn btn-success" type="submit" onClick={handleSubmit} >
           Submit Resume
         </button>
         </div></form></div></div></div>
@@ -194,11 +224,11 @@ const VacancyList = () => {
                                         <div class="col-md-6">
                                             <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                                                 <ul class="pagination">
-                                                    <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                    <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
+                                                    <li class="page-item disabled"><span aria-hidden="true">«</span></li>
+                                                    <li class="page-item active">1</li>
+                                                    <li class="page-item">2</li>
+                                                    <li class="page-item">3</li>
+                                                    <li class="page-item"><span aria-hidden="true">»</span></li>
                                                 </ul>
                                             </nav>
                                         </div>
@@ -211,11 +241,12 @@ const VacancyList = () => {
             </div>
         </div>
     </section>
+    <ToastContainer />
 </main>
   );
 };
 
-const Vacancy_user = () => {
+const VacancyUser = () => {
   return (
     <div>
       <VacancyList/>
@@ -223,5 +254,5 @@ const Vacancy_user = () => {
   );
 };
 
-export default Vacancy_user;
+export default VacancyUser;
    

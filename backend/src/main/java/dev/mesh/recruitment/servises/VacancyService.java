@@ -1,6 +1,6 @@
 package dev.mesh.recruitment.servises;
 
-import dev.mesh.recruitment.models.Recruiter;
+import dev.mesh.recruitment.entites.User;
 import dev.mesh.recruitment.models.Vacancy;
 import dev.mesh.recruitment.repositorys.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class VacancyService {
     public Vacancy createVacancy(Vacancy vacancy) {
         return mongoTemplate.insert(vacancy);
     }
-    private List<Recruiter> retrieveRecruiterIds() {
+    private List<User> retrieveRecruiterIds() {
         return new ArrayList<>();
     }
 

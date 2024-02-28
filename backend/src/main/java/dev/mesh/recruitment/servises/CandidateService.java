@@ -7,7 +7,9 @@ import dev.mesh.recruitment.repositorys.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +23,7 @@ public class CandidateService {
     private VacancyRepository vacancyRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
+
     public List<Candidate> getAllCandidates() {
         return candidateRepository.findAll();
     }
@@ -34,10 +37,18 @@ public class CandidateService {
         }
     }
 
-    public Candidate madeApplication(Candidate candidate) {
-        candidate.setStatus("Opened");
-        candidate.setLastUpdated(Date.from(Instant.now()));
-        return mongoTemplate.insert(candidate);
+    public Candidate madeApplication(Candidate candidate, MultipartFile resumeFile) {
+        try {
+            candidate.setStatus("Opened");
+            candidate.setLastUpdated(Date.from(Instant.now()));
+
+            // Convert MultipartFile content to byte[]
+            candidate.setFile(resumeFile.getBytes());
+
+            return mongoTemplate.insert(candidate);
+        } catch (IOException e) {
+            throw new RuntimeException("Error processing resume file", e);
+        }
     }
 
     public Candidate updateCandidate(String id, Candidate candidateDetails) {
@@ -65,7 +76,25 @@ public class CandidateService {
             throw new CandidateNotFoundException("Candidate not found with id " + id);
         }
     }
+    public Candidate updateCandidateWithFile(String id, Candidate candidateDetails, MultipartFile resumeFile) {
+        try {
+            Optional<Candidate> candidate = candidateRepository.findById(id);
+            if (candidate.isPresent()) {
+                // Update other candidate details
+                candidate.get().setName(candidateDetails.getName());
+                // ...
 
+                // Update resume file content
+                candidate.get().setFile(resumeFile.getBytes());
+
+                return candidateRepository.save(candidate.get());
+            } else {
+                throw new CandidateNotFoundException("Candidate not found with id " + id);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error processing resume file", e);
+        }
+    }
 
     public List<Candidate> getCandidatesByVacancy(Vacancy vacancyId) {
         // Find the vacancy by ID
@@ -80,7 +109,14 @@ public class CandidateService {
             throw new VacancyNotFoundException("Vacancy not found with ID: " + vacancyId);
         }
     }
-
+    public byte[] getResumeFile(String id) {
+        Optional<Candidate> candidate = candidateRepository.findById(id);
+        if (candidate.isPresent()) {
+            return candidate.get().getFile();
+        } else {
+            throw new CandidateNotFoundException("Candidate not found with id " + id);
+        }
+    }
 
 
 

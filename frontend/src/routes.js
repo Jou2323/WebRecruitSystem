@@ -20,7 +20,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 const routes = [
-  { path: '/Homepage', element: <Home /> },
+  { path: '/', element: <Home /> },
   { path: '/Vacancy', element: <Vacancy /> },
   { path: '/Interview', element: <Interview /> },
   { path: '/Position', element: <Position /> },
